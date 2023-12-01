@@ -75,6 +75,12 @@ namespace JogoForca.Classes
             {
                 Console.WriteLine("\nDigite uma letra:");
                 string letra = Console.ReadLine();
+                if(VerificaLetraDigitada(letra, listaLetras))
+                {
+                    Console.WriteLine("Você já digitou esta letra. Digite uma nova letra.\n");
+                    continue;
+                }
+
                 listaLetras.Add(letra);
 
                 bool verificaLetra = VerificaLetra(palavra, letra);
@@ -190,6 +196,10 @@ namespace JogoForca.Classes
             return forca;
         }
 
+        public static bool VerificaLetraDigitada(string letra, List<string> listaDePalavras)
+        {
+            return listaDePalavras.Contains(letra);
+        }
         public static bool VerificaVencedor(string palavra, string linhas)
         {
             if(palavra.ToLower() == linhas.ToLower())
