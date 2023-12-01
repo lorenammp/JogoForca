@@ -13,7 +13,7 @@ namespace JogoForca.Classes
     {
         public static void JogoMenu()
         {
-            Console.WriteLine("Selecione uma das opções abaixo para continuar:");
+            Console.WriteLine("\nSelecione uma das opções abaixo para continuar:");
             Console.WriteLine("1- Jogar");
             Console.WriteLine("2- Sair");
 
@@ -44,24 +44,29 @@ namespace JogoForca.Classes
         {
             System.Environment.Exit(1);
         }
-        public static string EscolhePalavraAleatoria()
+        public static KeyValuePair<string, string> EscolhePalavraAleatoria()
         {
-            string[] arrayDePalavras = ClasseDePalavras.ArrayDePalavras();
+            Dictionary<string, string> listaDePalavras = ClasseDePalavras.ArrayDePalavras();
             var randomNum = new Random();
-            string palavra = arrayDePalavras[randomNum.Next(arrayDePalavras.Length - 1)];
+            int num = randomNum.Next(listaDePalavras.Count - 1);
+            
+            var palavra = listaDePalavras.ElementAt(num);
 
             return palavra;
         }
 
         public static void GeraJogo()
         {
-            string palavra = EscolhePalavraAleatoria();
+            var valorPalavra = EscolhePalavraAleatoria();
+            string palavra = valorPalavra.Key;
+            string dica = valorPalavra.Value;
             string linhas = GeraLinhas(palavra);
             int erros = 0;
 
             List<string> listaLetras = new List<string>();
 
             Console.WriteLine($"A palavra tem {linhas.Length} letras.");
+            Console.WriteLine($"\nA dica é: {dica.ToUpper()}");
             string forca = GeraForca();
             Console.WriteLine(forca);
             Console.WriteLine(linhas);
@@ -77,7 +82,8 @@ namespace JogoForca.Classes
                 {
                     erros++;
                     forca = AdicionaBonecoForca(forca, erros);
-                    Console.WriteLine($"{letra} não está na palavra. Você tem mais {7 - erros} erros.");
+                    Console.WriteLine($"\"{letra}\" não existe na palavra-chave. Você já errou {erros} vezes, no total.");
+                    Console.WriteLine($" Você ainda tem mais {7 - erros} tentativas.");
                 }
                     
                 else
@@ -88,7 +94,7 @@ namespace JogoForca.Classes
                 {
                     Console.Write($"{str} ");
                 }
-                Console.WriteLine($"\n{linhas}");
+                Console.WriteLine($"\n\n{linhas}");
 
                 bool vencedor = VerificaVencedor(palavra, linhas);
 
@@ -122,7 +128,7 @@ namespace JogoForca.Classes
 
         public static bool VerificaLetra(string palavra, string letra)
         {
-            int indexLetra = palavra.IndexOf(letra);
+            int indexLetra = palavra.ToLower().IndexOf(letra.ToLower());
 
             if (indexLetra == -1)
                 return false;
