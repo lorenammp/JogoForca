@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Jogo da forca desenvolvido para o curso de C#
+
 namespace JogoForca.Classes
 {
     using Palavras;
